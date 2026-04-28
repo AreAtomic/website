@@ -25,6 +25,14 @@ export default function Footer() {
         >
           LinkedIn
         </a>
+        <a
+          href="https://www.malt.fr/profile/aureliensebe1"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[13px] text-white/40 hover:text-white/80 transition-colors"
+        >
+          Malt
+        </a>
       </div>
     </footer>
   )
