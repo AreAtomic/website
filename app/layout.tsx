@@ -11,7 +11,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Aurélien Sèbe — Développeur Fullstack & CTO Freelance',
+  title: 'Aurélien Sèbe — Développeur Fullstack Freelance',
   description:
     'Développeur freelance fullstack — web, SaaS, intégration IA. Ancien CTO. Je cadre vos projets, construis vos produits, sans brûler votre budget.',
 }

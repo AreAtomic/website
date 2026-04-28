@@ -37,7 +37,7 @@ const credentials = [
         />
       </svg>
     ),
-    title: 'Freelance depuis 2019',
+    title: 'Freelance',
     sub: 'Auto-entrepreneur · Disponible · Basé en France',
   },
   {
@@ -75,10 +75,10 @@ const techStack = [
   'React',
   'Next.js',
   'Node.js',
-  'Python',
   'TypeScript',
+  'Python',
   'PostgreSQL',
-  'OpenAI',
+  'Claude',
   'LangChain',
   'Docker',
   'Vercel',
@@ -119,9 +119,8 @@ export default function About() {
                 pas ce qui fait briller en démo.
               </p>
               <p>
-                Auto-entrepreneur, je travaille en direct avec les fondateurs et
-                les équipes produit. Pas d&apos;agence, pas
-                d&apos;intermédiaire.
+                Auto-entrepreneur, je travaille en direct avec les équipes
+                produit. Pas d&apos;agence, pas d&apos;intermédiaire.
               </p>
             </Reveal>
 
