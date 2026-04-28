@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   title: 'Aurélien Sèbe — Développeur Fullstack Freelance',
   description:
     'Développeur freelance fullstack — web, SaaS, intégration IA. Ancien CTO. Je cadre vos projets, construis vos produits, sans brûler votre budget.',
+  icons: {
+    icon: '/favicon.ico',
+  }
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
