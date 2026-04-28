@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp \"C:\\\\Users\\\\aurel\\\\.claude\\\\projects\\\\C--Users-aurel-Desktop-Dev-Freelance--agents-produit-website\\\\0097d807-3b3b-40db-8164-c7381ef14c56\\\\tool-results\\\\webfetch-1777377888859-eyysjr.bin\" /tmp/design.gz)",
+      "Bash(gunzip -c /tmp/design.gz)",
+      "Read(//tmp/**)",
+      "Bash(tar xf *)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(git add *)"
+    ]
+  }
+}
