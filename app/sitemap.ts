@@ -1,7 +1,11 @@
 import { MetadataRoute } from 'next'
 import { getAllPosts } from '@/lib/posts'
 
-const SITE_URL = process.env.SITE_URL
+const SITE_URL = process.env.SITE_URL as string
+
+if (!SITE_URL) {
+  throw new Error('SITE_URL environment variable is not set')
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const posts = getAllPosts()
