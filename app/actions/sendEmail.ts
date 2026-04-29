@@ -3,6 +3,7 @@
 import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
+const email = process.env.CONTACT_EMAIL
 
 export type SendEmailResult = { success: true } | { success: false; error: string }
 
@@ -15,7 +16,7 @@ export async function sendEmail(formData: FormData): Promise<SendEmailResult> {
 
     await resend.emails.send({
       from: 'Contact <onboarding@resend.dev>',
-      to: ['aureliensebe@gmail.com'],
+      to: [email],
       reply_to: email,
       subject: `[Contact] ${categorie} — ${nom}`,
       html: `
