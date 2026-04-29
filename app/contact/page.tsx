@@ -40,15 +40,6 @@ export default function ContactPage() {
                       <path d="M2 7l7 4 7-4" stroke="rgba(255,255,255,0.7)" strokeWidth="1.4" />
                     </svg>
                   </div>
-                  <div>
-                    <div className="text-[13px] text-white/50 mb-0.5">Email</div>
-                    <a
-                      href="mailto:aureliensebe@gmail.com"
-                      className="text-[15px] font-medium text-white hover:text-brand-orange transition-colors"
-                    >
-                      aureliensebe@gmail.com
-                    </a>
-                  </div>
                 </div>
 
                 <div className="flex items-start gap-3.5">

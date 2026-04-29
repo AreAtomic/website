@@ -34,7 +34,7 @@ export default function Services() {
             Ce que je fais pour vous
           </h2>
           <p className='text-[17px] text-brand-muted max-w-[480px] leading-[1.6] mb-14'>
-            Trois offres claires, sans surprise — de la réflexion à la
+            Trois offres claires, sans surprise. De la réflexion à la
             livraison.
           </p>
         </Reveal>
@@ -55,7 +55,7 @@ export default function Services() {
               </div>
               <p className='text-[15px] text-brand-muted leading-[1.65] mb-7'>
                 Avant d&apos;écrire une ligne, on clarifie. Architecture, specs,
-                risques — je vous donne la carte avant l&apos;expédition.
+                risques. Je vous donne la carte avant l&apos;expédition.
               </p>
               <ul className='space-y-0'>
                 {[
@@ -92,7 +92,7 @@ export default function Services() {
               </div>
               <p className='text-[15px] text-white/75 leading-[1.65] mb-7'>
                 Du back au front. Je code, je teste, je déploie. Code propre,
-                scalable, maintenable par votre équipe après moi.
+                scalable, maintenable par votre équipe.
               </p>
               <ul className='space-y-0'>
                 {[
@@ -128,7 +128,7 @@ export default function Services() {
                 <span className='text-[14px]'>À partir de</span> 900€/jour
               </div>
               <p className='text-[15px] text-brand-muted leading-[1.65] mb-7'>
-                LLM, RAG, agents — intégrés proprement dans vos produits. Pas de
+                LLM, RAG, agents intégrés proprement dans vos produits. Pas de
                 la démo, du vrai.
               </p>
               <ul className='space-y-0'>

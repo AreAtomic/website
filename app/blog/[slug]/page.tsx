@@ -8,12 +8,23 @@ export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }))
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string }
+}) {
   try {
     const { meta } = getPost(params.slug)
     return {
       title: `${meta.title} — Aurélien Sèbe`,
       description: meta.description,
+      openGraph: {
+        title: meta.title,
+        description: meta.description,
+        type: 'article',
+        publishedTime: meta.date,
+        authors: ["Aurélien Sèbe"],
+      },
     }
   } catch {
     return {}
@@ -63,7 +74,9 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             <h1 className="text-[clamp(28px,4vw,48px)] font-extrabold tracking-[-0.03em] text-brand-ink leading-[1.1] mb-4">
               {meta.title}
             </h1>
-            <p className="text-[17px] text-brand-muted leading-[1.6]">{meta.description}</p>
+            <p className="text-[17px] text-brand-muted leading-[1.6]">
+              {meta.description}
+            </p>
           </div>
 
           <div className="border-t border-[#E8E8E8] pt-10">
@@ -76,7 +89,9 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           <div className="mt-16 pt-10 border-t border-[#E8E8E8]">
             <div className="bg-brand-blue-light rounded-2xl p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <div className="font-bold text-brand-ink mb-1">Un projet en tête ?</div>
+                <div className="font-bold text-brand-ink mb-1">
+                  Un projet en tête ?
+                </div>
                 <p className="text-[15px] text-brand-muted">
                   Parlons de votre situation — sans engagement.
                 </p>

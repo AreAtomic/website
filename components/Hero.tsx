@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import portrait from '@/app/portrait.jpg'
+import portrait from '@/app/assets/portrait.jpg'
 
 export default function Hero() {
   return (
@@ -20,14 +20,14 @@ export default function Hero() {
 
             {/* Title */}
             <h1 className="text-[clamp(40px,5vw,68px)] font-extrabold text-brand-ink leading-[1.08] tracking-[-0.03em] mb-6">
-              <span className="block whitespace-nowrap">Je pense d&apos;abord.</span>
+              <span className="block whitespace-nowrap">Je cadre d&apos;abord.</span>
               <em className="not-italic text-brand-blue block whitespace-nowrap">Je code ensuite.</em>
             </h1>
 
             {/* Subtitle */}
             <p className="text-lg text-brand-muted max-w-[520px] leading-[1.65] mb-11">
               Développeur fullstack et ex CTO. Je cadre vos projets, construis vos produits, et
-              intègre l&apos;IA pour aller plus loin — sans brûler votre budget.
+              intègre l&apos;IA pour aller plus loin sans brûler votre budget.
             </p>
 
             {/* CTA buttons */}

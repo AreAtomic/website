@@ -90,8 +90,8 @@ export default function About() {
   return (
     <section id='about' className='py-24 px-6 md:px-10 bg-white'>
       <div className='max-w-[1080px] mx-auto'>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-start'>
-          {/* Left column */}
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10 items-start'>
+          {/* Left column - Title & text */}
           <div>
             <Reveal>
               <div className='text-[12px] font-bold tracking-[0.1em] uppercase text-brand-blue mb-3'>
@@ -108,49 +108,25 @@ export default function About() {
                 <strong className='text-brand-ink font-semibold'>
                   Aurélien Sèbe
                 </strong>
-                . Développeur fullstack freelance, basé en France. J&apos;ai
-                passé 3 ans comme CTO d&apos;une startup de prise de rendez-vous
-                avant de me mettre à mon compte.
+                . Développeur fullstack freelance depuis 2019, basé en France.
+                J&apos;ai passé 3 ans comme CTO d&apos;une startup de prise de
+                rendez-vous. Maintenant je me remet à mon compte.
               </p>
               <p>
-                Ce qui me différencie : je comprends le produit avant de
-                comprendre la technique. Je pose les bonnes questions,
-                j&apos;identifie les risques, et je construis ce qui a du sens —
-                pas ce qui fait briller en démo.
+                Ce qui me différencie : je comprends <b>le produit</b> avant de mettre
+                en pratique la technique. Je m&apos;assure de poser les bonnes
+                questions, d&apos;identifier les risques, et de construire ce
+                qui a <b>du sens</b> pour l&apos;utilisateur, pas ce qui est joli mais
+                qui n&apos;est pas bon pour <b>l&apos;utilisateur</b>.
               </p>
               <p>
                 Auto-entrepreneur, je travaille en direct avec les équipes
                 produit. Pas d&apos;agence, pas d&apos;intermédiaire.
               </p>
             </Reveal>
-
-            {/* Story card */}
-            <Reveal className='mt-10'>
-              <div className='bg-[#F7F9FF] border border-[#DDEAFF] rounded-2xl p-8'>
-                <div className='text-[11px] font-bold tracking-[0.1em] uppercase text-brand-blue mb-3'>
-                  Expérience fondatrice
-                </div>
-                <div className='text-[17px] font-bold text-brand-ink mb-3'>
-                  3 ans CTO — ILEA CONNECT
-                </div>
-                <p className='text-sm text-[#555] leading-[1.7]'>
-                  J&apos;ai piloté toute la technique d&apos;une startup après
-                  une levée de 200k€. On a brûlé du budget pour commercialiser
-                  un POC trop tôt — avant que le produit soit stable. La startup
-                  a été liquidée alors que je livrais le MVP.
-                  <br />
-                  <br />
-                  <strong className='text-brand-blue'>
-                    Ce que ça m&apos;a appris :
-                  </strong>{' '}
-                  aucun budget commercial ne rattrape un cadrage produit raté.
-                  C&apos;est pourquoi le cadrage est mon offre phare.
-                </p>
-              </div>
-            </Reveal>
           </div>
 
-          {/* Right column */}
+          {/* Right column - Credentials & Tech Stack (appears 2nd on mobile) */}
           <Reveal>
             <ul className='divide-y divide-[#F0F0F0]'>
               {credentials.map((c) => (
@@ -182,6 +158,31 @@ export default function About() {
                   {t}
                 </span>
               ))}
+            </div>
+          </Reveal>
+
+          {/* Left column - Story card (appears 3rd on mobile, below title & text on desktop) */}
+          <Reveal>
+            <div className='bg-[#F7F9FF] border border-[#DDEAFF] rounded-2xl p-8 pb-2'>
+              <div className='text-[11px] font-bold tracking-[0.1em] uppercase text-brand-blue mb-3'>
+                Expérience fondatrice
+              </div>
+              <div className='text-[17px] font-bold text-brand-ink mb-3'>
+                3 ans CTO — ILEA CONNECT
+              </div>
+              <p className='text-sm text-[#555] leading-[1.7]'>
+                J&apos;ai piloté toute la technique d&apos;une startup après
+                une levée de 200k€. On a brûlé du budget pour commercialiser
+                un POC trop tôt — avant que le produit soit stable. La startup
+                a été liquidée alors que je livrais le MVP.
+                <br />
+                <br />
+                <strong className='text-brand-blue'>
+                  Ce que ça m&apos;a appris :
+                </strong>{' '}
+                aucun budget commercial ne rattrape un cadrage produit raté.
+                C&apos;est pourquoi le cadrage est mon offre phare.
+              </p>
             </div>
           </Reveal>
         </div>

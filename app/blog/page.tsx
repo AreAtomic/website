@@ -20,7 +20,7 @@ export default function BlogPage() {
             Notes & réflexions
           </h1>
           <p className="text-[17px] text-brand-muted leading-[1.6] mb-16">
-            Développement web, produit, IA — ce que j&apos;apprends en le faisant.
+            Développement web, produit, IA
           </p>
 
           {posts.length === 0 ? (
