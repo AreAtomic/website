@@ -74,9 +74,9 @@ const projects: Project[] = [
   },
   {
     name: 'Omiz App',
-    role: 'Hackaton - lead developer',
+    role: 'Hackathon — développeur',
     description:
-      "Agrégateur de lives français en temps réel — trouve tous les streamers actifs sur Twitch en un coup d'œil. Projet perso, construit en solo.",
+      "Agrégateur de lives français en temps réel, construit lors d'un hackathon. Permet de retrouver tous les streamers francophones actifs sur Twitch en un seul endroit.",
     stack: ['React', 'Node.js', 'API REST'],
     githubUrl: 'https://github.com/AreAtomic/Omiz_App',
     status: 'Archivé',
