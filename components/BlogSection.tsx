@@ -5,20 +5,20 @@ export default function BlogSection() {
   const posts = getAllPosts();
 
   return (
-    <section className='py-20 px-6'>
+    <section className='py-20 px-6 bg-brand-blue-dark'>
       <div className='max-w-[760px] mx-auto'>
-        <div className='text-[12px] font-bold tracking-[0.1em] uppercase text-brand-blue mb-3'>
+        <div className='text-[12px] font-bold tracking-[0.1em] uppercase text-brand-blue-light mb-3'>
           Blog
         </div>
-        <h1 className='text-[clamp(32px,4vw,52px)] font-extrabold tracking-[-0.03em] text-brand-ink leading-[1.1] mb-4'>
+        <h1 className='text-[clamp(32px,4vw,52px)] font-extrabold tracking-[-0.03em] text-brand-surface leading-[1.1] mb-4'>
           Notes & réflexions
         </h1>
-        <p className='text-[17px] text-brand-muted leading-[1.6] mb-16'>
+        <p className='text-[17px] text-brand-blue-light leading-[1.6] mb-16'>
           Développement web, produit, IA
         </p>
 
         {posts.length === 0 ? (
-          <p className='text-brand-muted'>
+          <p className='text-brand-surface'>
             Aucun article pour le moment. Revenez bientôt.
           </p>
         ) : (
