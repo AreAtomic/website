@@ -1,0 +1,47 @@
+---
+title: "Migration MongoDB → Prisma en 3h : ce que le cadrage change vraiment"
+date: 2026-05-05
+slug: migration-mongodb-prisma
+description: Comment j'ai migré TrainPreddict de MongoDB/Mongoose vers Prisma en 3 heures en drivant l'IA avec un plan étape par étape.
+---
+
+J'avais prévu une journée. J'en ai mis trois heures.
+
+TrainPreddict, c'est mon application de génération de plans d'entraînement pour cyclistes. Je voulais la remettre en ligne rapidement — à moindre coût, pour la mettre en portfolio. La version existante tournait sur MongoDB avec Mongoose. Je voulais passer sur PostgreSQL + Prisma.
+
+Voilà comment ça s'est passé.
+
+## Pourquoi Prisma
+
+MongoDB et Mongoose font le travail. Mais sur un projet TypeScript, ils ont un défaut structurel : le modèle Mongoose et les types TypeScript vivent dans deux endroits différents. Résultat, tu passes ton temps à les synchroniser manuellement — ou tu te retrouves avec des `any` partout et des bugs à l'exécution.
+
+Prisma règle ça différemment. Le schéma est unique, central, et il génère automatiquement les types TypeScript de toute la couche données. Plus de désynchronisation. Plus de casting manuel. L'IDE vérifie tout à la compilation — et l'IA travaille mieux avec un schéma explicite qu'avec des modèles Mongoose implicites.
+
+## Le plan avant de toucher le premier fichier
+
+C'est là que tout s'est joué. Avant d'ouvrir le moindre fichier, j'ai posé les 6 étapes :
+
+1. **Créer la base de données** — provisionner une instance PostgreSQL
+2. **Écrire le schéma Prisma** — traduire les modèles Mongoose existants en `schema.prisma`
+3. **Pousser le schéma** — `prisma db push` pour créer les tables (contexte démo — en production, on utilise `prisma migrate deploy`)
+4. **Remplacer la connexion** — sortir Mongoose de l'initialisation de l'app, brancher Prisma Client
+5. **Migrer les controllers, models, services** — remplacer chaque appel Mongoose par son équivalent Prisma
+6. **Tester l'intégration front-end** — vérifier que les endpoints répondent correctement
+
+Six étapes. Chacune avec un périmètre défini, un début et une fin. C'est ce plan qui a rendu la migration rapide — pas l'IA.
+
+## Comment j'ai utilisé l'IA
+
+L'IA est arrivée à l'étape 2 et a tout accéléré.
+
+Une fois le plan posé, chaque étape devenait un prompt précis. Pour réécrire le schéma Prisma depuis les modèles Mongoose existants, j'ai fourni les fichiers et demandé la traduction directe. Résultat net, sans approximation.
+
+Même chose pour les controllers et services : fichier par fichier, remplacement de `Model.find()`, `instance.save()`, `Model.findById()` par les équivalents `prisma.model.findMany()`, `prisma.model.create()`, `prisma.model.findUnique()`.
+
+Sans plan, l'IA aurait eu besoin de comprendre l'architecture entière avant chaque échange. Avec le plan, chaque prompt était chirurgical — contexte minimal, résultat maximal.
+
+## Ce que ça m'a appris
+
+Une migration, c'est un projet comme un autre. Ce qui détermine la durée, ce n'est pas la complexité technique — c'est la clarté du plan avant de commencer.
+
+3 heures pour migrer une app entière. La prochaine fois que quelqu'un me dit qu'il n'a pas le temps de cadrer — je lui montre cette migration.
