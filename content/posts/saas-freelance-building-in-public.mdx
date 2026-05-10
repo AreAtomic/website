@@ -1,0 +1,31 @@
+---
+title: "Un SaaS pour mon activité freelance — je le construis en public"
+date: 2026-05-10
+slug: saas-freelance-building-in-public
+description: Après trois ans comme CTO startup, je relance mon activité freelance en documentant un outil métier (pipeline, devis, contrats, paiements) et ce que j’ai appris sur la vitesse, les raccourcis et une EDA minimaliste.
+---
+
+En **avril 2026**, je relance mon activité de freelance. Derrière moi, **trois ans en tant que CTO** d’une startup : une période intense côté humain et produit. Côté technique, je n’ai jamais eu le loisir de poser une **infra vraiment scalable** sur la durée.
+
+Ce n’était pas qu’une question de volonté. C’était la combinaison de deux contraintes : un **premier SaaS à cette échelle** pour moi, et un rythme où l’on enchaînait sans toujours respecter l’ordre **recherche → cadrage → développement**. Quand la priorité est de tenir le produit debout demain, la dette technique et l’architecture deviennent des sujets qu’on repousse — jusqu’au jour où elles coûtent plus cher que si on les avait traitées plus tôt.
+
+## Ce que j’en retiens
+
+**Aller vite en prenant des raccourcis, ça coûte du temps.** Sur un SaaS, une base **minimaliste au départ**, c’est raisonnable. En revanche, figer toute l’API en **pur REST/CRUD** sans réfléchir au volume et aux évolutions, c’est s’enfermer dans des refactors douloureuses.
+
+Une **architecture événementielle minimaliste** (EDA) dès le départ ne veut pas dire sur-ingénierie : ça veut dire laisser une **porte ouverte** pour faire évoluer le modèle, découpler ce qui doit l’être, et livrer des **fonctionnalités plus vite** quand le produit accélère.
+
+**Je le fais maintenant, en connaissance de cause**, sur un outil que je construis **pour mon propre usage** : **pipeline commercial**, **devis**, **gestion de contrats**, **suivi de projets**, **paiements**, **dashboard**. L’objectif n’est pas seulement le binaire à la fin : c’est **documenter le process en public** — pour les retours, pour montrer les arbitrages, et pour que le récit serve à d’autres freelances ou devs qui se posent les mêmes questions.
+
+## Suivre le projet
+
+- **Code et historique des commits** : [github.com/AreAtomic/saas-freelance-building-in-public](https://github.com/AreAtomic/saas-freelance-building-in-public)
+- **Autres articles sur le blog** : [aureliensebe.com/blog](https://aureliensebe.com/blog)
+
+## Pour les curieux technique et produit
+
+Au fil des semaines, j’y publierai (ici ou via le dépôt) des éléments plus **opérationnels** : périmètre MVP, user stories, choix d’infra, schéma de données. Si tu veux échanger sur un point précis — architecture, facturation, scope produit — les commentaires et les issues sur le repo sont ouverts.
+
+---
+
+*Aurélien Sèbe — développeur freelance fullstack. Retours et questions : bienvenus.*
