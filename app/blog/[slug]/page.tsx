@@ -1,7 +1,10 @@
 import { notFound } from 'next/navigation'
+import Image from 'next/image'
 import Link from 'next/link'
 import { MDXRemote } from 'next-mdx-remote/rsc'
-import { getAllPosts, getPost } from '@/lib/posts'
+import { getAllPosts, getPost, type PostMeta } from '@/lib/posts'
+
+const siteOrigin = process.env.NEXT_PUBLIC_SITE_URL || 'https://aureliensebe.com'
 
 export async function generateStaticParams() {
   const posts = getAllPosts()
@@ -15,6 +18,11 @@ export async function generateMetadata({
 }) {
   try {
     const { meta } = getPost(params.slug)
+    const m = meta as PostMeta
+    const ogUrl =
+      m.cover && m.cover.startsWith('/')
+        ? new URL(m.cover, siteOrigin).href
+        : undefined
     return {
       title: `${meta.title} — Aurélien Sèbe`,
       description: meta.description,
@@ -23,8 +31,17 @@ export async function generateMetadata({
         description: meta.description,
         type: 'article',
         publishedTime: meta.date,
-        authors: ["Aurélien Sèbe"],
+        authors: ['Aurélien Sèbe'],
+        ...(ogUrl && {
+          images: [{ url: ogUrl, alt: m.coverAlt ?? meta.title }],
+        }),
       },
+      ...(ogUrl && {
+        twitter: {
+          card: 'summary_large_image' as const,
+          images: [ogUrl],
+        },
+      }),
     }
   } catch {
     return {}
@@ -40,6 +57,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   }
 
   const { meta, content } = post
+  const m = meta as PostMeta
 
   return (
     <main className="pt-16">
@@ -61,6 +79,19 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             </svg>
             Retour au blog
           </Link>
+
+          {m.cover ? (
+            <div className="mb-10 rounded-2xl overflow-hidden border border-[#E8E8E8] shadow-[0_8px_40px_rgba(0,0,0,0.06)] bg-[#f4f5f7]">
+              <Image
+                src={m.cover}
+                alt={m.coverAlt ?? m.title}
+                width={1600}
+                height={900}
+                className="w-full h-auto object-cover object-top"
+                priority
+              />
+            </div>
+          ) : null}
 
           {/* Header */}
           <div className="mb-12">

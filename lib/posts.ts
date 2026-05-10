@@ -9,6 +9,9 @@ export type PostMeta = {
   date: string
   slug: string
   description: string
+  /** Chemin public, ex. /images/blog/ma-couverture.png */
+  cover?: string
+  coverAlt?: string
 }
 
 export function getAllPosts(): PostMeta[] {
