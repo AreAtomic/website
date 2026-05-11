@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { MDXRemote } from 'next-mdx-remote/rsc'
-import { getAllPosts, getPost, type PostMeta } from '@/lib/posts'
+import { getAllPosts, getPost, isPostPublished, type PostMeta } from '@/lib/posts'
 
 const siteOrigin = process.env.NEXT_PUBLIC_SITE_URL || 'https://aureliensebe.com'
 
@@ -18,6 +18,7 @@ export async function generateMetadata({
 }) {
   try {
     const { meta } = getPost(params.slug)
+    if (!isPostPublished(meta)) notFound()
     const m = meta as PostMeta
     const ogUrl =
       m.cover && m.cover.startsWith('/')
@@ -57,6 +58,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   }
 
   const { meta, content } = post
+  if (!isPostPublished(meta)) notFound()
   const m = meta as PostMeta
 
   return (

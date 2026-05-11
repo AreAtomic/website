@@ -12,9 +12,37 @@ export type PostMeta = {
   /** Chemin public, ex. /images/blog/ma-couverture.png */
   cover?: string
   coverAlt?: string
+  /** Si true : jamais listé ni accessible (prioritaire sur la date). */
+  draft?: boolean
 }
 
-export function getAllPosts(): PostMeta[] {
+/** Jour calendaire Europe/Paris, format YYYY-MM-DD */
+function calendarDayParis(value: string | Date): string {
+  if (typeof value === 'string') {
+    const m = /^(\d{4}-\d{2}-\d{2})/.exec(value.trim())
+    if (m) return m[1]
+  }
+  const d = value instanceof Date ? value : new Date(String(value))
+  if (Number.isNaN(d.getTime())) return ''
+  return d.toLocaleDateString('en-CA', { timeZone: 'Europe/Paris' })
+}
+
+function calendarDayTodayParis(): string {
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Paris' })
+}
+
+/**
+ * Article visible (liste blog, sitemap, URL) : pas brouillon,
+ * et date du frontmatter (jour à Paris) ≤ aujourd’hui.
+ */
+export function isPostPublished(meta: PostMeta): boolean {
+  if (meta.draft === true) return false
+  const pub = calendarDayParis(meta.date as string | Date)
+  if (!pub) return true
+  return pub <= calendarDayTodayParis()
+}
+
+function readAllPostMetaFromDisk(): PostMeta[] {
   if (!fs.existsSync(postsDir)) return []
   return fs
     .readdirSync(postsDir)
@@ -24,7 +52,19 @@ export function getAllPosts(): PostMeta[] {
       const { data } = matter(raw)
       return data as PostMeta
     })
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+}
+
+export function getAllPosts(): PostMeta[] {
+  return readAllPostMetaFromDisk()
+    .filter(isPostPublished)
+    .sort((a, b) => new Date(b.date as string).getTime() - new Date(a.date as string).getTime())
+}
+
+/** Tous les fichiers posts (y compris brouillons / date future) — utile pour outillage local. */
+export function getAllPostsIncludingUnpublished(): PostMeta[] {
+  return readAllPostMetaFromDisk().sort(
+    (a, b) => new Date(b.date as string).getTime() - new Date(a.date as string).getTime(),
+  )
 }
 
 export function getPost(slug: string): { meta: PostMeta; content: string } {
