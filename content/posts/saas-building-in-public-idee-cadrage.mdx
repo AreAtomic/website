@@ -1,0 +1,91 @@
+---
+title: "SaaS Building in public : Le POC en une journée"
+date: 2026-05-11
+slug: saas-building-in-public-idee-cadrage
+description: "Prospection dans le chat : j'en avais ras le bol. Deux prompts plus tard, un CRM local qui tourne (JSON, HTML, Node en http natif, pas de dépendance). Retour sur ce POC en une journée avec des agents, et ce que ça change pour la suite."
+cover: /images/blog/saas-building-in-public-idee-cadrage-cover.png
+coverAlt: "Interface CRM POC — pipeline Kanban et arborescence des fichiers JSON générés en 2 prompts."
+---
+## Le POC en une journée avec des agents IA
+
+### Le problème de départ
+
+Ça fait quinze jours que j'ai repris le freelance. Offre, site, blog, LinkedIn : une fois la machine en route, j'ai attaqué la prospection. Comme beaucoup, j'ai branché des agents sur Claude.
+
+Le hic, c'est l'usage. Quand tu racontes pour la dixième fois où en est un prospect dans un chat, tu perds un temps fou et tu crames des tokens pour du suivi basique. J'ai cherché un outil ultra simple pour freelances. Je n'ai rien trouvé qui me convienne.
+
+### Le POC : ce que c'est, ce que c'est pas
+
+Un POC, ce n'est pas une "app". Pas d'auth, pas de base SQL, pas de serveur à rallonge, pas d'UX polie. Tu testes une chose : est-ce que ça tient debout quand tu t'en sers vraiment ?
+
+Concrètement : du JSON pour les données, un `index.html` pour lire et modifier, un `server.js` en `http` natif Node pour servir le tout. Zéro dépendance, même pas de `package.json`. Tu copies le dossier, tu lances `node server.js`, ça tourne. Pas de Docker, pas de schéma à faire valider par trois personnes.
+
+J'ai balancé ça à mes agents dev sans cadrage global, juste l'intention.
+
+Prompt 1 : Maintenant crée un fichier json dans le dossier prospection pour suivre ma pipeline. Et ajoute un petit système local de visualisation modification avec Thomas et Luc.
+
+Prompt 2 : Je veux qu'on active le mode mission et qu'on développe le CRM maison en mode minimum pour que je puisse m'en servir d'interface et qu'on puisse y mettre des informations depuis Claude cowork. Il faut placer ça dans prospection.
+
+Résultat en 2 prompts :
+```
+prospection/
+  data/
+    prospects.json     → 5 prospects migrés
+    contacts.json      → 7 contacts
+    interactions.json  → 4 interactions historiques
+    tasks.json         → 4 tâches actives
+  server.js            → API REST CRUD complète
+  index.html           → Interface CRM SPA
+```
+
+Je ne suis pas parti de zéro : j'avais déjà une pipeline dans Claude Cowork et un contexte assez dense. Avec un prompt de besoin seul, ça aurait sans doute suffi pour démarrer.
+
+Voilà le cadrage minimal que j'aurais pu donner dès le début :
+
+"Créons un outil de suivi de prospection ultra basique pour un freelance. Il faut :
+1) Suivre la pipeline commerciale des prospects en mode Kanban
+2) Avoir un répertoire de contacts liés aux prospects
+3) Suivre l'historique des interactions avec un prospect
+4) Ajouter des tâches à un prospect"
+
+### La progression MoSCoW — chaque brique née du précédent
+
+Personne n'avait écrit un plan en trois colonnes. Les extensions sont arrivées parce que la brique d'avant rendait la suivante évidente.
+
+Pipeline au centre : Kanban, contacts, interactions, tâches. C'était le point de départ.
+
+Ensuite les projets internes : une fois la prospection dans l'outil, j'ai voulu le même genre de suivi pour ce que je lance à côté. Toujours du JSON dans le repo, sans usine à gaz. POC v1 bouclé.
+
+Après avoir fermé le PC, l'idée a continué à mijoter. Pendant le sport, j'ai lancé un vrai CDC comme en mission client. Et l'objectif s'est clarifié : un SaaS pour freelances, simple sur la surface, mais qui couvre ce que j'ai appris à la dure.
+
+Devis : j'en ai traîné dans trop de fichiers, je ne veux pas refaire la même erreur.
+
+Contrats : longtemps je les ai sous-estimés, jusqu'au jour où la "confiance" m'a coûté plus de 10 000€.
+
+Clients rattachés aux contrats : sans ça, un contrat c'est une page qui ne sait pas à qui elle s'adresse.
+
+Factures et paiements, volontairement de côté pour l'instant. Ce n'est pas que ce soit futile ; c'est un chantier à part entier, et ça aurait alourdi la V1 pour pas grand-chose au début.
+
+E-signature (type Yousign) : identifiée, pas dans le MVP. C'est le nœud douloureux d'un contrat, mais aussi toute une chaîne (API, états, relances). Je la garde pour plus tard pour ne pas figer le reste.
+
+Je documente tout ça en public, surtout pour m'obliger à tenir le fil. Si ça peut servir à d'autres, tant mieux ; les leçons, je les récupère de toute façon sur ce projet.
+
+### L'équipe d'agents — qui fait quoi
+
+Je n'ai pas tout fait dans ma tête seul. Selon le sujet, je changeais d'agent.
+
+Sur le POC : Marc pour cadrer le fil, Élise pour le périmètre et le hors-scope, Baptiste pour enchaîner le dev et garder le code propre.
+
+- **Marc** (Chef d'Orchestre) — décisions, séquençage, cohérence globale
+- **Élise** (Analyse & Besoin) — périmètre, hors scope, document de cadrage
+- **Baptiste** (Dev) — backlog technique, implémentation, code review
+
+Pour le passage au cahier des charges, l'équipe s'est élargie ; c'est le sujet de l'article suivant.
+
+---
+
+J'avais un POC qui tournait. La suite, c'était : est-ce que ça vaut un vrai produit ?
+
+- Prochain article : du POC au cahier des charges — ce que le code a révélé avant la spec
+- Repo GitHub : [saas-freelance-building-in-public](https://github.com/AreAtomic/saas-freelance-building-in-public)
+- Suivre la suite ici chaque semaine

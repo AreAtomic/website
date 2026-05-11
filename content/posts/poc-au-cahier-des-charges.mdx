@@ -1,0 +1,72 @@
+---
+title: "Du POC au cahier des charges — ce que le code a révélé avant la spec"
+date: 2026-05-12
+slug: poc-au-cahier-des-charges
+description: "D'abord le POC, puis le CDC : ce que l'usage m'a obligé à inclure dans le MVP, ce que je croyais indispensable et que j'ai repoussé, et comment tout ça a fini en spec v2.4."
+cover: /images/blog/poc-au-cahier-des-charges-cover.png
+coverAlt: "Extrait de la spec JSON v2.4 — matrice MoSCoW et frontière MVP / V2 du gestionnaire de contrats freelance."
+---
+
+## Du POC à la spec : ce que l'usage a changé
+
+*Deuxième article de la série Building in Public — [lire l'article 1](https://www.aureliensebe.com/blog/saas-building-in-public-idee-cadrage)*
+
+---
+
+### Spec d'abord, produit après
+
+Beaucoup de SaaS partent d'une spec : fonctionnalités, charge, backlog. Quelques mois plus tard tu te rends compte que ce que tu as écrit ne colle pas à ce que les gens veulent, ou que toi seul tu ne peux pas le tenir.
+
+J'ai essayé l'ordre inverse.
+
+Après le POC, l'idée a continué à tourner dans ma tête. Pendant le sport le lendemain, j'ai lancé un CDC comme je le ferais pour un client. Sauf que là, j'avais déjà quelque chose sous les yeux qui marchait. Les choix venaient du vécu, pas d'un document vide.
+
+### Ce que le POC a révélé
+
+Un POC ne prouve pas seulement que "ça marche". Il te met sous le nez des sujets que tu n'aurais pas sortis d'une spec froide.
+
+J'avais prévu la pipeline commerciale. Une fois dedans au quotidien, le trou s'est vu tout seul : je n'avais nulle part pour suivre mes projets internes. Pas une grande théorie, juste le constat qu'il manquait une pièce.
+
+Même chose pour le dashboard et les alertes. Je stockais déjà l'info ; ce qui me fatiguait, c'était d'aller la rechercher. Tâches en retard, devis qui périment, contrats qui se terminent : des alertes comme ça, je ne les aurais pas listées au départ sur un Google Doc.
+
+À l'inverse, j'aurais mis la facturation complète en V1 sans réfléchir, genre "PDF + tout le tralala". En pratique, suivre facture envoyée / attendu / reçu couvre une grosse partie des cas. Un moteur de facturation au lancement, ça m'aurait bouffé des semaines pour un gain faible.
+
+L'e-signature, c'est le gros point chaud d'un contrat. Mais c'est un produit à part : Yousign, états de signature, relances… Je l'ai sorti du MVP volontairement. Ce sera une V2 à part entière, pas un bouton en plus.
+
+### La construction du cahier des charges
+
+J'ai cadré avec trois entrées : le POC, quatre ans de missions client, et un persona qu'on ne fait pas à l'arrache.
+
+Marie, le persona principal : freelance qui monte, 2-3 ans d'activité, plutôt entre 25 et 80k€ / an. Word pour les contrats, Excel pour les devis, Drive pour ranger. Elle ne rêve pas d'un ERP ; elle veut passer de l'accord oral au papier signé sans se battre avec ses outils.
+
+Le MoSCoW est parti du POC, pas d'une wishlist. Chaque ligne a une raison : soit je l'ai vécue dans l'outil, soit je l'ai vue en mission.
+
+La ligne MVP / V2, c'est là où un CDC se gagne ou se perd. Tout ce qui ne bloque pas le premier client payant part en V2. E-signature, facturation type Chorus/Factur-X, multi-devise, partage avec un assistant ou un comptable : c'est écrit, priorisé, mais pas dans le premier jet.
+
+### Spec, archi, et les allers-retours
+
+À partir du CDC j'ai posé une cible : EDA, DDD, CQRS. Puis j'ai cherché ce qui tenait la route pour scaler sans me mettre six mois de travail solo dans le mur.
+
+L'EDA "pur" avec tout le CQRS, oui, ça fait sens sur la durée : événements, read models, découplage. Pour un MVP que je code seul en voulant sortir vite, c'était trop lourd d'entrée de jeu.
+
+Je suis resté sur une **EDA minimaliste** : événements et bounded contexts posés, modèle de données qui laisse de la marge pour le CQRS plus tard, mais pas toute la tambouille distribuée tant que je n'en ai pas besoin. Si ça accélère, je préfère une migration ciblée à une réécriture.
+
+Ensuite j'ai mis le CDC, le POC et l'archi en regard. Ça tirait dans des directions différentes : ce que le POC avait validé, ce que l'archi poussait, ce que je peux tenir seul. On a recoupé jusqu'à un MVP lisible, avec une V2 déjà tracée.
+
+### L'équipe élargie pour cette phase
+
+- **Marc** (Chef d'Orchestre) — coordination CDC + archi, arbitrages entre les trois sources
+- **Élise** (Analyse & Besoin) — synthèse du besoin, frontière in/out scope
+- **Antoine** (Architecture) — options d'archi comparées, ADRs, plan d'implémentation par phases
+- **Thomas** (Mentor Tech) — challenge des choix techniques, validation des arbitrages EDA vs monolithe
+- **Marina** (Product Manager) — CDC complet : personas, MoSCoW, user stories, spec technique EDA/DDD/CQRS en JSON + HTML
+
+### Le résultat
+
+À la fin il y a un CDC en v2.4, une spec JSON que les agents peuvent lire telle quelle, un plan en 9 phases, et un schéma Postgres figé avec les choix expliqués quelque part.
+
+Le prochain article parlera du pourquoi du JSON : ce que ça change quand tu travailles avec des agents, et pourquoi j'ai ajouté une couche HTML pour la lire sans me coller au brut.
+
+- Prochain article : Ma spec est aussi une base de données — voilà ce que ça change
+- Repo GitHub : [saas-freelance-building-in-public](https://github.com/AreAtomic/saas-freelance-building-in-public)
+- Suivre la suite ici chaque semaine
