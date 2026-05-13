@@ -1,9 +1,17 @@
+import type { Metadata } from 'next'
 import Hero from '@/components/Hero'
 import Services from '@/components/Services'
 import About from '@/components/About'
 import Portfolio from '@/components/Portfolio'
 import ContactSection from '@/components/ContactSection'
 import BlogSection from '@/components/BlogSection'
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+  openGraph: {
+    url: '/',
+  },
+}
 
 export default function HomePage() {
   return (

@@ -66,6 +66,7 @@ export default function Hero() {
             <Image
               src={portrait}
               alt='Aurélien Sèbe'
+              sizes='(max-width: 768px) 100vw, 380px'
               className='rounded-[20px] object-cover w-full max-w-[250px] md:max-w-[380px] md:mx-0 h-auto'
               priority
             />

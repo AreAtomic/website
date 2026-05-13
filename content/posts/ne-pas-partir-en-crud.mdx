@@ -1,0 +1,134 @@
+---
+title: Ne partez pas en CRUD. Voilà pourquoi.
+date: 2026-05-13
+slug: ne-pas-partir-en-crud
+description: Comment trois ans comme CTO m'ont convaincu de commencer par une architecture événementielle.
+cover: /images/blog/eda-dette-technique.png
+coverAlt: "Ne partez pas en CRUD. Utilisez l'EDA simplifié"
+---
+
+L'important ce n'est pas d'aller vite au départ. C'est d'être capable d'accélérer quand ça compte.
+
+J'ai mis du temps à comprendre ça. Trop longtemps.
+
+---
+
+## Le moment où j'ai compris
+
+Quand j'étais CTO d'ILEA CONNECT — une startup de prise de rendez-vous pour les professionnels de la beauté à domicile — on avait levé 200 000 €. L'équipe technique, c'était moi et deux alternants.
+
+La pression était simple : sortir quelque chose de vendable le plus vite possible. On avait des commerciaux qui attendaient. Des investisseurs qui suivaient. On a choisi de partir vite.
+
+L'architecture était simple, en couches : des contrôleurs qui appellent des services, des services qui font leurs mutations directement en base. Aucune couche domaine, aucun événement. Simple, compréhensible, rapide à bootstrapper.
+
+Un an plus tard, le produit en feu.
+
+Les bugs remontaient en prod parce qu'on avait commercialisé un POC. Les commerciaux vendaient pendant qu'on restructurait l'API en plein vol. Chaque nouvelle fonctionnalité demandait de modifier 5 fichiers différents parce que la logique était éparpillée partout. On faisait des journées de plus en plus longues pour tenir le rythme, et on prenait de plus en plus de mauvaises décisions parce qu'on était épuisés.
+
+---
+
+## Le vrai problème avec CRUD au démarrage
+
+CRUD, c'est séduisant. C'est intuitif. Quand vous créez un devis, vous faites un `INSERT`. Quand vous l'envoyez, vous faites un `UPDATE statut = 'envoyé'`. Quand le client accepte, encore un `UPDATE`.
+
+Le problème, c'est que votre logique métier grandit. Et CRUD n'a pas de place pour elle.
+
+Ce `UPDATE statut = 'envoyé'`, dans 6 mois, il doit aussi :
+
+- Déclencher un email de confirmation
+- Créer une alerte de relance à J+7
+- Mettre à jour le pipeline commercial
+- Logger l'événement pour les stats
+
+Alors vous commencez à ajouter du code après le `UPDATE`. Dans le service. Dans le contrôleur. Dans un hook. Jusqu'au jour où personne ne sait exactement ce qui se passe quand un devis est envoyé — parce que ça dépend d'où vous l'appelez.
+
+C'est le piège. Pas les `console.log` oubliés, pas les variables mal nommées. C'est la logique métier qui s'est dissoute dans la couche de persistance.
+
+---
+
+## Ce que j'ai changé : EDA simplifié
+
+Aujourd'hui, je commence tous mes projets par une architecture orientée événements. Pas Kafka, pas RabbitMQ. Juste un EventBus in-process.
+
+Concrètement : chaque action métier devient une Command. Le handler persiste, puis émet un événement. Les effets de bord écoutent cet événement et réagissent de manière indépendante.
+
+**Avant — le service fait tout :**
+
+```typescript
+// DevisService — tout est couplé
+async envoyerDevis(id: string) {
+  await this.prisma.devis.update({ where: { id }, data: { statut: 'envoyé' } });
+  await this.emailService.sendConfirmation(id);  // couplé
+  await this.alertService.createRelance(id);      // couplé
+  await this.statsService.log('devis_envoyé');    // couplé
+}
+```
+
+**Après — CQRS + EventBus :**
+
+```typescript
+// devis.commands.ts
+export class EnvoyerDevisCommand implements ICommand {
+  constructor(public readonly devisId: string) {}
+}
+
+// devis.controller.ts
+@Post(':id/envoyer')
+async envoyer(@Param('id') id: string) {
+  return this.commandBus.execute(new EnvoyerDevisCommand(id));
+}
+
+// devis.handlers.ts
+@CommandHandler(EnvoyerDevisCommand)
+export class EnvoyerDevisHandler implements ICommandHandler<EnvoyerDevisCommand> {
+  async execute(command: EnvoyerDevisCommand) {
+    await this.prisma.devis.update({
+      where: { id: command.devisId },
+      data: { statut: 'envoyé' },
+    });
+    this.eventEmitter.emit('devis.envoyé', { devisId: command.devisId });
+  }
+}
+
+// devis.listeners.ts
+@OnEvent('devis.envoyé')
+async handleDevisEnvoye(payload: { devisId: string }) {
+  await this.alertsService.createRelance(payload.devisId);
+}
+```
+
+Le contrôleur ne connaît pas Prisma. Le handler ne connaît pas les alertes. Si demain vous ajoutez un webhook Slack — vous ajoutez un listener dans `devis.listeners.ts`. Vous ne touchez à rien d'autre.
+
+**Modules organisés par domaine** — chaque domaine a ses propres fichiers : `devis.commands.ts`, `devis.queries.ts`, `devis.handlers.ts`, `devis.events.ts`, `devis.listeners.ts`. Quand vous ouvrez le dossier `devis/`, la logique est là où vous l'attendez.
+
+**EventBus in-process** — pas de broker externe. `@nestjs/event-emitter` suffit au démarrage. Quand le besoin d'un bus de message externe arrive (RabbitMQ, etc.), vous remplacez `eventEmitter.emit()` par `messageBus.publish()` dans les handlers. Les listeners, les contrôleurs, les commandes — rien d'autre ne change.
+
+---
+
+## Ce que vous gagnez, ce que vous sacrifiez
+
+**Ce que vous gagnez :**
+
+Chaque action métier est traçable. Vous savez exactement quand un devis est envoyé, qui a déclenché l'action, et quels effets ont suivi.
+
+Ajouter un effet de bord ne nécessite pas de modifier du code existant. Vous ajoutez un listener. C'est tout.
+
+Tester une commande isolément est trivial — vous injectez un eventEmitter mock et vous vérifiez qu'il émet.
+
+**Ce que vous sacrifiez :**
+
+Le démarrage prend quelques jours de plus. Il faut poser la structure, nommer les commandes, définir les événements. Ce n'est pas du temps perdu — c'est l'investissement dont parle le « negative split ».
+
+La courbe d'apprentissage pour un dev qui n'a jamais fait de CQRS est réelle. Pas rédhibitoire, mais réelle.
+
+---
+
+## Pourquoi ça s'appelle le « negative split »
+
+En course à pied, le negative split, c'est courir la deuxième moitié d'une course plus vite que la première. Les meilleurs marathoniens font ça — ils démarrent conservateurs et accélèrent quand les autres ralentissent.
+
+En engineering, c'est exactement ça. Vous « perdez » du temps au démarrage sur l'architecture. Mais quand arrive la vraie complexité — les fonctionnalités qui s'empilent, les retours utilisateurs, les pivots — vous pouvez accélérer. Pas ralentir.
+
+CRUD vous fait vous sentir rapide au kilomètre 5. EDA vous permet de finir le marathon.
+
+J'ai appris ça à mes dépens. Aujourd'hui, c'est le premier choix que je pose sur chaque nouveau projet.

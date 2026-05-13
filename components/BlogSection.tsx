@@ -10,9 +10,9 @@ export default function BlogSection() {
         <div className='text-[12px] font-bold tracking-[0.1em] uppercase text-brand-blue mb-3'>
           Blog
         </div>
-        <h1 className='text-[clamp(32px,4vw,52px)] font-extrabold tracking-[-0.03em] text-brand leading-[1.1] mb-4'>
+        <h2 className='text-[clamp(32px,4vw,52px)] font-extrabold tracking-[-0.03em] text-brand leading-[1.1] mb-4'>
           Notes & réflexions
-        </h1>
+        </h2>
         <p className='text-[17px] text-brand-muted leading-[1.6] mb-16'>
           Développement web, produit, IA
         </p>

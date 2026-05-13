@@ -6,14 +6,20 @@ import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { getSiteUrl } from '@/lib/site'
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
-  weight: ['300', '400', '500', '600', '700', '800'],
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+  adjustFontFallback: true,
 })
 
+const siteUrl = getSiteUrl()
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: 'Aurélien Sèbe — Développeur Fullstack Freelance',
   description:
     'Développeur freelance fullstack — web, SaaS, intégration IA. Ancien CTO. Je cadre vos projets, construis vos produits, sans brûler votre budget.',
@@ -21,11 +27,12 @@ export const metadata: Metadata = {
     title: 'Aurélien Sèbe — Développeur Fullstack Freelance',
     description:
       'Développeur freelance fullstack — web, SaaS, intégration IA. Ancien CTO. Je cadre vos projets, construis vos produits, sans brûler votre budget.',
-    url: 'https://aureliensebe.com',
+    url: '/',
     siteName: 'Aurélien Sèbe',
+    locale: 'fr_FR',
     images: [
       {
-        url: 'https://aureliensebe.com/og-image.png',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: "Je cadre d'abord, je code ensuite.",
@@ -38,7 +45,7 @@ export const metadata: Metadata = {
     title: 'Aurélien Sèbe — Développeur Fullstack Freelance',
     description:
       'Développeur freelance fullstack — web, SaaS, intégration IA. Ancien CTO. Je cadre vos projets, construis vos produits, sans brûler votre budget.',
-    images: ['https://aureliensebe.com/og-image.png'],
+    images: ['/og-image.png'],
   },
 }
 
@@ -51,18 +58,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className={inter.variable}>
-      <head>
-        <link rel="canonical" href={process.env.SITE_URL} />
-      </head>
       <body className="font-sans text-brand-ink bg-white">
         <Nav />
         {children}
         <Footer />
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="google-analytics" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}

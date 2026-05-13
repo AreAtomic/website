@@ -1,8 +1,21 @@
+import type { Metadata } from 'next'
 import ContactForm from '@/components/ContactForm'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Contact — Aurélien Sèbe',
   description: 'Parlons de votre projet — cadrage, développement ou intégration IA.',
+  alternates: { canonical: '/contact' },
+  openGraph: {
+    title: 'Contact — Aurélien Sèbe',
+    description: 'Parlons de votre projet — cadrage, développement ou intégration IA.',
+    url: '/contact',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Contact — Aurélien Sèbe',
+    description: 'Parlons de votre projet — cadrage, développement ou intégration IA.',
+  },
 }
 
 export default function ContactPage() {

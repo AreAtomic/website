@@ -1,7 +1,9 @@
 // app/robots.ts
 import { MetadataRoute } from 'next'
+import { getSiteUrl } from '@/lib/site'
 
 export default function robots(): MetadataRoute.Robots {
+  const origin = getSiteUrl()
   return {
     rules: [
       {
@@ -15,6 +17,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin', '/private'],
       },
     ],
-    sitemap: 'https://aureliensebe.com/sitemap.xml',
+    sitemap: `${origin}/sitemap.xml`,
   }
 }

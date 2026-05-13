@@ -1,13 +1,9 @@
 import { MetadataRoute } from 'next'
 import { getAllPosts } from '@/lib/posts'
-
-const SITE_URL = process.env.SITE_URL as string
-
-if (!SITE_URL) {
-  throw new Error('SITE_URL environment variable is not set')
-}
+import { getSiteUrl } from '@/lib/site'
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const SITE_URL = getSiteUrl()
   const posts = getAllPosts()
 
   // Routes statiques
@@ -29,6 +25,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.7,
+    },
+    {
+      url: `${SITE_URL}/portfolio`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.65,
     },
   ]
 

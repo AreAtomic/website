@@ -27,6 +27,11 @@ export default function Nav() {
           </Link>
         </li>
         <li>
+          <Link href="/portfolio" className="text-sm font-medium text-brand-muted hover:text-brand-blue transition-colors">
+            Portfolio
+          </Link>
+        </li>
+        <li>
           <Link href="/contact" className="text-sm font-medium text-brand-muted hover:text-brand-blue transition-colors">
             Contact
           </Link>

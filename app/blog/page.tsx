@@ -1,10 +1,23 @@
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { getAllPosts, type PostMeta } from '@/lib/posts'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Blog — Aurélien Sèbe',
   description: 'Réflexions sur le développement web, SaaS, et intégration IA.',
+  alternates: { canonical: '/blog' },
+  openGraph: {
+    title: 'Blog — Aurélien Sèbe',
+    description: 'Réflexions sur le développement web, SaaS, et intégration IA.',
+    url: '/blog',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Blog — Aurélien Sèbe',
+    description: 'Réflexions sur le développement web, SaaS, et intégration IA.',
+  },
 }
 
 export default function BlogPage() {
